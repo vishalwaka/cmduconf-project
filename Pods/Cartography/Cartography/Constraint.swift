@@ -6,27 +6,24 @@
 //  Copyright (c) 2014 Robert Böhnke. All rights reserved.
 //
 
-#if os(iOS)
+#if os(iOS) || os(tvOS)
 import UIKit
 #else
 import AppKit
 #endif
 
 internal class Constraint {
-    // Set to weak to avoid a retain cycle on the associated view.
-    weak var view: View?
     let layoutConstraint: NSLayoutConstraint
 
     func install() {
-        view?.addConstraint(layoutConstraint)
+        layoutConstraint.isActive = true
     }
 
     func uninstall() {
-        view?.removeConstraint(layoutConstraint)
+        layoutConstraint.isActive = false
     }
 
-    init(view: View, layoutConstraint: NSLayoutConstraint) {
-        self.view = view
+    init(_ layoutConstraint: NSLayoutConstraint) {
         self.layoutConstraint = layoutConstraint
     }
 }

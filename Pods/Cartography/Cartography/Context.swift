@@ -6,46 +6,44 @@
 //  Copyright (c) 2014 Robert Böhnke. All rights reserved.
 //
 
-#if os(iOS)
+#if os(iOS) || os(tvOS)
 import UIKit
+
+public typealias LayoutRelation = NSLayoutRelation
 #else
 import AppKit
+
+public typealias LayoutRelation = NSLayoutConstraint.Relation
 #endif
 
 public class Context {
     internal var constraints: [Constraint] = []
+    
+    internal func addConstraint(_ from: Property, to: Property? = nil, coefficients: Coefficients = Coefficients(), relation: LayoutRelation = .equal) -> NSLayoutConstraint {
+        if let fromItem = from.item as? View {
+            fromItem.translatesAutoresizingMaskIntoConstraints = false
+        }
 
-    internal func addConstraint(from: Property, to: Property? = nil, coefficients: Coefficients = Coefficients(), relation: NSLayoutRelation = .Equal) -> NSLayoutConstraint {
-        from.view.car_translatesAutoresizingMaskIntoConstraints = false
-
-        let layoutConstraint = NSLayoutConstraint(item: from.view,
+        let layoutConstraint = NSLayoutConstraint(item: from.item,
                                                   attribute: from.attribute,
                                                   relatedBy: relation,
-                                                  toItem: to?.view,
-                                                  attribute: to?.attribute ?? .NotAnAttribute,
+                                                  toItem: to?.item,
+                                                  attribute: to?.attribute ?? .notAnAttribute,
                                                   multiplier: CGFloat(coefficients.multiplier),
                                                   constant: CGFloat(coefficients.constant))
 
-        if let to = to {
-            if let common = closestCommonAncestor(from.view, b: to.view ) {
-                constraints.append(Constraint(view: common, layoutConstraint: layoutConstraint))
-            } else {
-                fatalError("No common superview found between \(from.view) and \(to.view)")
-            }
-        } else {
-            constraints.append(Constraint(view: from.view, layoutConstraint: layoutConstraint))
-        }
+        constraints.append(Constraint(layoutConstraint))
 
         return layoutConstraint
     }
 
-    internal func addConstraint(from: Compound, coefficients: [Coefficients]? = nil, to: Compound? = nil, relation: NSLayoutRelation = NSLayoutRelation.Equal) -> [NSLayoutConstraint] {
+    internal func addConstraint(_ from: Compound, coefficients: [Coefficients]? = nil, to: Compound? = nil, relation: LayoutRelation = .equal) -> [NSLayoutConstraint] {
         var results: [NSLayoutConstraint] = []
 
         for i in 0..<from.properties.count {
             let n: Coefficients = coefficients?[i] ?? Coefficients()
 
-            results.append(addConstraint(from.properties[i], coefficients: n, to: to?.properties[i], relation: relation))
+            results.append(addConstraint(from.properties[i], to: to?.properties[i], coefficients: n, relation: relation))
         }
 
         return results

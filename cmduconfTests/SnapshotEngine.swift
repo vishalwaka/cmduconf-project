@@ -17,7 +17,7 @@ protocol SnapshotEngine {
 
 extension QuickSpec: SnapshotEngine {
     
-    func validateSnapshot() -> MatcherFunc<Snapshotable> {
+    func validateSnapshot() -> Predicate<Snapshotable> {
         return (recordingMode ? recordSnapshot() : haveValidSnapshot())
     }
     

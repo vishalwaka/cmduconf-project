@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Robert Böhnke. All rights reserved.
 //
 
-#if os(iOS)
+#if os(iOS) || os(tvOS)
 import UIKit
 #else
 import AppKit
@@ -23,23 +23,23 @@ public protocol RelativeCompoundEquality : Compound { }
 
 /// Declares a property equal to a the result of an expression.
 ///
-/// - parameter lhs: The affected property. The associated view will have
+/// - parameter lhs: The affected property. The associated item will have
 ///             `translatesAutoresizingMaskIntoConstraints` set to `false`.
 /// - parameter rhs: The expression.
 ///
 /// - returns: An `NSLayoutConstraint`.
 ///
-public func == <P: RelativeCompoundEquality>(lhs: P, rhs: Expression<P>) -> [NSLayoutConstraint] {
+@discardableResult public func == <P: RelativeCompoundEquality>(lhs: P, rhs: Expression<P>) -> [NSLayoutConstraint] {
     return lhs.context.addConstraint(lhs, coefficients: rhs.coefficients, to: rhs.value)
 }
 
 /// Declares a property equal to another compound property.
 ///
-/// - parameter lhs: The affected property. The associated view will have
+/// - parameter lhs: The affected property. The associated item will have
 ///             `translatesAutoresizingMaskIntoConstraints` set to `false`.
 /// - parameter rhs: The other property.
 ///
-public func == <P: RelativeCompoundEquality>(lhs: P, rhs: P) -> [NSLayoutConstraint] {
+@discardableResult public func == <P: RelativeCompoundEquality>(lhs: P, rhs: P) -> [NSLayoutConstraint] {
     return lhs.context.addConstraint(lhs, to: rhs)
 }
 
@@ -49,48 +49,48 @@ public protocol RelativeCompoundInequality : Compound { }
 
 /// Declares a property less than or equal to another compound property.
 ///
-/// - parameter lhs: The affected property. The associated view will have
+/// - parameter lhs: The affected property. The associated item will have
 ///             `translatesAutoresizingMaskIntoConstraints` set to `false`.
 /// - parameter rhs: The other property.
 ///
 /// - returns: An `NSLayoutConstraint`.
 ///
-public func <= <P: RelativeCompoundInequality>(lhs: P, rhs: P) -> [NSLayoutConstraint] {
-    return lhs.context.addConstraint(lhs, to: rhs, relation: NSLayoutRelation.LessThanOrEqual)
+@discardableResult public func <= <P: RelativeCompoundInequality>(lhs: P, rhs: P) -> [NSLayoutConstraint] {
+    return lhs.context.addConstraint(lhs, to: rhs, relation: .lessThanOrEqual)
 }
 
 /// Declares a property greater than or equal to another compound property.
 ///
-/// - parameter lhs: The affected property. The associated view will have
+/// - parameter lhs: The affected property. The associated item will have
 ///             `translatesAutoresizingMaskIntoConstraints` set to `false`.
 /// - parameter rhs: The other property.
 ///
 /// - returns: An `NSLayoutConstraint`.
 ///
-public func >= <P: RelativeCompoundInequality>(lhs: P, rhs: P) -> [NSLayoutConstraint] {
-    return lhs.context.addConstraint(lhs, to: rhs, relation: NSLayoutRelation.GreaterThanOrEqual)
+@discardableResult public func >= <P: RelativeCompoundInequality>(lhs: P, rhs: P) -> [NSLayoutConstraint] {
+    return lhs.context.addConstraint(lhs, to: rhs, relation: .greaterThanOrEqual)
 }
 
 /// Declares a property less than or equal to the result of an expression.
 ///
-/// - parameter lhs: The affected property. The associated view will have
+/// - parameter lhs: The affected property. The associated item will have
 ///             `translatesAutoresizingMaskIntoConstraints` set to `false`.
 /// - parameter rhs: The other property.
 ///
 /// - returns: An `NSLayoutConstraint`.
 ///
-public func <= <P: RelativeCompoundInequality>(lhs: P, rhs: Expression<P>) -> [NSLayoutConstraint] {
-    return lhs.context.addConstraint(lhs, coefficients: rhs.coefficients, to: rhs.value, relation: NSLayoutRelation.LessThanOrEqual)
+@discardableResult public func <= <P: RelativeCompoundInequality>(lhs: P, rhs: Expression<P>) -> [NSLayoutConstraint] {
+    return lhs.context.addConstraint(lhs, coefficients: rhs.coefficients, to: rhs.value, relation: .lessThanOrEqual)
 }
 
 /// Declares a property greater than or equal to the result of an expression.
 ///
-/// - parameter lhs: The affected property. The associated view will have
+/// - parameter lhs: The affected property. The associated item will have
 ///             `translatesAutoresizingMaskIntoConstraints` set to `false`.
 /// - parameter rhs: The other property.
 ///
 /// - returns: An `NSLayoutConstraint`.
 ///
-public func >= <P: RelativeCompoundInequality>(lhs: P, rhs: Expression<P>) -> [NSLayoutConstraint] {
-    return lhs.context.addConstraint(lhs, coefficients: rhs.coefficients, to: rhs.value, relation: NSLayoutRelation.GreaterThanOrEqual)
+@discardableResult public func >= <P: RelativeCompoundInequality>(lhs: P, rhs: Expression<P>) -> [NSLayoutConstraint] {
+    return lhs.context.addConstraint(lhs, coefficients: rhs.coefficients, to: rhs.value, relation: .greaterThanOrEqual)
 }

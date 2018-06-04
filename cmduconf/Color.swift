@@ -11,7 +11,7 @@ import UIKit
 public struct Color {
     static let mainColor = UIColor(red:0.00, green:0.92, blue:0.09, alpha:1.00)
     static let darkMainColor = UIColor(red:0.00, green:0.58, blue:0.15, alpha:1.00)
-    static let whiteColor = UIColor.whiteColor()
-    static let blackColor = UIColor.blackColor()
-    static let lightGrayColor = UIColor.lightGrayColor()
+    static let whiteColor = UIColor.white
+    static let blackColor = UIColor.black
+    static let lightGrayColor = UIColor.lightGray
 }

@@ -28,9 +28,9 @@ class View: UIView {
             textLabel.text = bodyText
         }
     }
-    var buttonText = "CMD+U" {
+    var buttonText = "CMD+UA" {
         didSet {
-            button.setTitle(buttonText, forState: UIControlState.Normal)
+            button.setTitle(buttonText, for: .normal)
         }
     }
     
@@ -44,7 +44,7 @@ class View: UIView {
     
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFontOfSize(26.0)
+        label.font = UIFont.boldSystemFont(ofSize: 26.0)
         label.textColor = Color.blackColor
         return label
     }()
@@ -52,25 +52,25 @@ class View: UIView {
     private let logo: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "cmduconf")
-        imageView.contentMode = .ScaleAspectFit
+        imageView.contentMode = .scaleAspectFit
         return imageView
     }()
     
     private let textLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFontOfSize(18.0)
+        label.font = UIFont.systemFont(ofSize: 18.0)
         label.textColor = Color.lightGrayColor
         label.numberOfLines = 0
-        label.textAlignment = .Center
+        label.textAlignment = .center
         return label
     }()
     
     private let button: UIButton = {
-        let button = UIButton(type: .Custom)
+        let button = UIButton(type: .custom)
         let backgroundNormalImage = UIImage(color: Color.mainColor)
-        button.setBackgroundImage(backgroundNormalImage, forState: .Normal)
-        button.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
-        button.titleLabel?.font = UIFont.boldSystemFontOfSize(18.0)
+        button.setBackgroundImage(backgroundNormalImage, for: .normal)
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18.0)
         button.layer.cornerRadius = 10.0
         button.clipsToBounds = true
         return button
@@ -92,11 +92,11 @@ class View: UIView {
     // MARK: View setup
     
     private func setup() {
-        backgroundColor = UIColor.whiteColor()
+        backgroundColor = UIColor.white
         
         titleLabel.text = titleText
         textLabel.text = bodyText
-        button.setTitle(buttonText, forState: UIControlState.Normal)
+        button.setTitle(buttonText, for: .normal)
         
         titleView.addSubview(titleLabel)
         titleView.addSubview(logo)
@@ -105,7 +105,7 @@ class View: UIView {
         contentView.addSubview(button)
         addSubview(contentView)
         
-        button.addTarget(self, action: #selector(View.buttonPressed), forControlEvents: .TouchUpInside)
+        button.addTarget(self, action: #selector(View.buttonPressed), for: .touchUpInside)
         
         setupConstraints()
     }
@@ -148,7 +148,7 @@ class View: UIView {
     
     // MARK: Action
     
-    func buttonPressed() {
-        delegate?.viewButtonPressed(self)
+    @objc func buttonPressed() {
+        delegate?.viewButtonPressed(fromView: self)
     }
 }
